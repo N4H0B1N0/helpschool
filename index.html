@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help School</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">🎓 Help School</div>
+    <nav>
+      <button data-view="catalogo" class="nav-btn ativo">Catálogo</button>
+      <button data-view="meus" class="nav-btn">Meus cursos</button>
+      <button data-view="verificar" class="nav-btn">Verificar certificado</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- FUNCIONALIDADE 1: Catálogo e inscrição -->
+    <section id="view-catalogo" class="view">
+      <h1>Catálogo de cursos</h1>
+      <p class="sub">Escolha um curso e inscreva-se com um clique.</p>
+      <div class="filtros">
+        <input id="busca" type="search" placeholder="Buscar curso...">
+        <select id="categoria"><option value="">Todas as categorias</option></select>
+      </div>
+      <div id="lista-cursos" class="grade"></div>
+    </section>
+
+    <!-- FUNCIONALIDADE 2: Aulas e progresso -->
+    <section id="view-meus" class="view oculto">
+      <h1>Meus cursos</h1>
+      <div id="lista-meus" class="grade"></div>
+    </section>
+
+    <section id="view-curso" class="view oculto">
+      <button class="voltar" id="voltar-meus">← Meus cursos</button>
+      <h1 id="curso-titulo"></h1>
+      <div class="progresso-box">
+        <div class="barra"><div id="barra-progresso"></div></div>
+        <span id="pct-progresso">0%</span>
+      </div>
+      <div class="curso-layout">
+        <aside id="lista-aulas"></aside>
+        <article class="aula">
+          <h2 id="aula-titulo"></h2>
+          <div id="aula-corpo"></div>
+          <div class="aula-acoes">
+            <button id="btn-anterior" class="sec">← Anterior</button>
+            <button id="btn-proxima">Concluir e próxima →</button>
+          </div>
+        </article>
+      </div>
+
+      <!-- FUNCIONALIDADE 3: Quiz e certificado -->
+      <section id="area-final" class="final oculto">
+        <h2>Avaliação final</h2>
+        <p id="quiz-info"></p>
+        <form id="quiz-form"></form>
+        <button id="btn-corrigir">Enviar respostas</button>
+        <div id="quiz-resultado"></div>
+      </section>
+    </section>
+
+    <section id="view-verificar" class="view oculto">
+      <h1>Verificar certificado</h1>
+      <p class="sub">Cole o código (hash) impresso no certificado para checar a autenticidade.</p>
+      <div class="filtros">
+        <input id="hash-input" type="text" placeholder="Ex.: HS-3F9A1C...">
+        <button id="btn-verificar">Verificar</button>
+      </div>
+      <div id="verificar-resultado"></div>
+    </section>
+  </main>
+
+  <!-- Modal do certificado -->
+  <div id="modal" class="modal oculto">
+    <div class="modal-conteudo">
+      <div id="certificado"></div>
+      <div class="modal-acoes">
+        <button id="btn-imprimir">Baixar / Imprimir PDF</button>
+        <button id="btn-linkedin" class="sec">Compartilhar no LinkedIn</button>
+        <button id="btn-fechar" class="sec">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast oculto"></div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script src="dados.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
