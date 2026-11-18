@@ -1,4 +1,3 @@
-// Dados dos cursos (simulam o banco de dados do sistema)
 const CURSOS = [
   {
     id: "html", titulo: "HTML e CSS do Zero", categoria: "Programação", horas: 20,
@@ -49,4 +48,4 @@ const CURSOS = [
     ]
   }
 ];
-const NOTA_MINIMA = 70; // percentual
+const NOTA_MINIMA = 70; 
