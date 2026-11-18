@@ -1,8 +1,6 @@
-/* Help School — protótipo funcional (sem back-end; dados no localStorage) */
 const $ = (s) => document.querySelector(s);
 const KEY = "helpschool:v1";
 
-// ---------- Estado persistido ----------
 function carregar() {
   try { return JSON.parse(localStorage.getItem(KEY)) || { inscritos: {}, certificados: {} }; }
   catch { return { inscritos: {}, certificados: {} }; }
@@ -21,7 +19,6 @@ function pct(id) {
   return Math.round((ins.concluidas.length / curso(id).aulas.length) * 100);
 }
 
-// ---------- Navegação ----------
 function ir(view) {
   document.querySelectorAll(".view").forEach((v) => v.classList.add("oculto"));
   $("#view-" + view).classList.remove("oculto");
@@ -33,9 +30,6 @@ function ir(view) {
 document.querySelectorAll(".nav-btn").forEach((b) => b.addEventListener("click", () => ir(b.dataset.view)));
 $("#voltar-meus").addEventListener("click", () => ir("meus"));
 
-/* =====================================================
-   FUNCIONALIDADE 1 — Catálogo e inscrição em 1 clique (RF01)
-   ===================================================== */
 [...new Set(CURSOS.map((c) => c.categoria))].forEach((cat) => {
   const o = document.createElement("option"); o.value = o.textContent = cat; $("#categoria").appendChild(o);
 });
@@ -64,9 +58,6 @@ $("#lista-cursos").addEventListener("click", (e) => {
   if (a) abrirCurso(a);
 });
 
-/* =====================================================
-   FUNCIONALIDADE 2 — Aulas com progresso automático (RF02 + RF03)
-   ===================================================== */
 function renderMeus() {
   const ids = Object.keys(estado.inscritos);
   $("#lista-meus").innerHTML = ids.length ? ids.map((id) => {
@@ -82,7 +73,7 @@ $("#lista-meus").addEventListener("click", (e) => { if (e.target.dataset.abrir) 
 function abrirCurso(id) {
   cursoAtual = id;
   const c = curso(id), ins = estado.inscritos[id];
-  aulaAtual = Math.min(ins.concluidas.length, c.aulas.length - 1); // retoma de onde parou
+  aulaAtual = Math.min(ins.concluidas.length, c.aulas.length - 1); 
   ir("curso"); $("#curso-titulo").textContent = c.titulo;
   renderCurso();
 }
@@ -105,16 +96,13 @@ $("#lista-aulas").addEventListener("click", (e) => {
 $("#btn-anterior").addEventListener("click", () => { aulaAtual--; renderCurso(); });
 $("#btn-proxima").addEventListener("click", () => {
   const c = curso(cursoAtual), ins = estado.inscritos[cursoAtual];
-  if (!ins.concluidas.includes(aulaAtual)) ins.concluidas.push(aulaAtual); // marcação automática
+  if (!ins.concluidas.includes(aulaAtual)) ins.concluidas.push(aulaAtual); 
   salvar();
   if (aulaAtual < c.aulas.length - 1) aulaAtual++;
   else toast("Todas as aulas concluídas! Faça a avaliação final.");
   renderCurso();
 });
 
-/* =====================================================
-   FUNCIONALIDADE 3 — Quiz com correção automática e certificado com hash (RF04 + RF05)
-   ===================================================== */
 function renderFinal() {
   const c = curso(cursoAtual), ins = estado.inscritos[cursoAtual];
   const liberado = ins.concluidas.length === c.aulas.length;
@@ -157,7 +145,7 @@ async function sha256(txt) {
     const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt));
     return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
   }
-  let h = 0; for (const ch of txt) h = (h * 31 + ch.charCodeAt(0)) >>> 0; // fallback simples
+  let h = 0; for (const ch of txt) h = (h * 31 + ch.charCodeAt(0)) >>> 0; 
   return h.toString(16).padStart(8, "0").repeat(8);
 }
 async function emitirCertificado(c) {
